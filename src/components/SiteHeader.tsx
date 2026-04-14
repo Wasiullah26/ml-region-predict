@@ -10,7 +10,6 @@ const nav = [
   { href: '/how-it-works', label: 'How it works' },
   { href: '/optimizer', label: 'Optimizer' },
   { href: '/dashboard', label: 'Dashboard' },
-  { href: '/pricing', label: 'Pricing' },
 ] as const
 
 export function SiteHeader() {

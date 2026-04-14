@@ -23,12 +23,6 @@ export function SiteFooter() {
               Dashboard
             </Link>
           </div>
-          <div className="flex flex-col gap-2">
-            <span className="font-medium text-slate-500">Company</span>
-            <Link href="/pricing" className="text-slate-300 hover:text-white">
-              Pricing
-            </Link>
-          </div>
         </div>
       </div>
       <div className="border-t border-white/5 py-6 text-center text-xs text-slate-500">
