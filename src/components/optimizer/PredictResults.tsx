@@ -43,23 +43,14 @@ export function PredictResults({ result, onReset }: Props) {
             </span>
           </div>
 
-          <dl className="mt-8 grid gap-4 border-t border-white/10 pt-6 sm:grid-cols-2">
-            <div>
-              <dt className="text-xs text-slate-500">Distance signal</dt>
-              <dd className="mt-1 text-2xl font-bold text-white">
-                {result.distance_km.toLocaleString()}
-                <span className="text-base font-normal text-slate-500"> km</span>
-              </dd>
-            </div>
-            <div>
-              <dt className="text-xs text-slate-500">Cloud region</dt>
-              <dd className="mt-1 font-mono text-sm text-slate-200">{result.region}</dd>
-            </div>
-          </dl>
+          <div className="mt-8 border-t border-white/10 pt-6">
+            <p className="text-xs text-slate-500">Cloud region</p>
+            <p className="mt-1 font-mono text-sm text-slate-200">{result.region}</p>
+          </div>
 
           <p className="mt-6 text-sm leading-relaxed text-slate-400">
-            The model ranks candidate data centres using your geography-derived distance plus live-style
-            network inputs (load, loss, bandwidth). Use alternatives below for failover planning.
+            The model ranks candidate data centres using your geography and live-style network inputs
+            (load, loss, bandwidth). Use alternatives below for failover planning.
           </p>
         </section>
 

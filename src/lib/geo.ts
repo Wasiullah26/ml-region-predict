@@ -42,3 +42,11 @@ export function haversineKm(
 export function hubById(id: string): GeoHub | undefined {
   return GEO_HUBS.find((h) => h.id === id)
 }
+
+/** Geographic signal for /predict from the selected customer hub alone (not shown in UI). */
+export function distanceKmForCustomerHub(customerHubId: string): number {
+  const cust = hubById(customerHubId)
+  const ref = hubById('eu-central')
+  if (!cust || !ref) return 500
+  return haversineKm(cust, ref)
+}

@@ -37,18 +37,16 @@ export default function HowItWorksPage() {
                 that moment.
               </p>
               <p className="mt-4">
-                The system returns the recommended data centre together with a confidence score and a
-                ranked list of alternatives, enabling intelligent dynamic routing decisions rather
-                than static geographic assignment.
+                The system returns the recommended data centre and a ranked list of alternatives,
+                enabling intelligent dynamic routing decisions rather than static geographic
+                assignment.
               </p>
             </div>
 
             <h2 className="mt-8 text-2xl font-semibold text-white">Inputs you provide</h2>
             <ul className="mt-6 space-y-4">
               {[
-                'Where your users or customers are concentrated (geography hub).',
-                'Where you are leaning to deploy workloads first (second hub).',
-                'We derive a distance signal (great-circle km) between those hubs, or you can override it.',
+                'Where you are based, or where your customers are mainly concentrated (single geography hub).',
                 'Network load (0–1), packet loss, and bandwidth (Mbps) to reflect current conditions.',
               ].map((item) => (
                 <li key={item} className="flex gap-3 text-slate-300">
@@ -62,13 +60,12 @@ export default function HowItWorksPage() {
             <ul className="mt-6 space-y-4 text-slate-300">
               <li className="flex gap-3">
                 <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-cyan-400" />
-                A primary recommendation: region name, provider, human-readable location, estimated
-                latency, and confidence.
+                A primary recommendation: region name, provider, human-readable location, and cloud
+                region id.
               </li>
               <li className="flex gap-3">
                 <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-cyan-400" />
-                A full ranking of alternative data centres with scores for failover and architecture
-                planning.
+                A full ranking of alternative data centres for failover and architecture planning.
               </li>
             </ul>
 

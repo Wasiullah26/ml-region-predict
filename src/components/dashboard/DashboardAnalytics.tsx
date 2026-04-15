@@ -77,7 +77,6 @@ function buildRunbookText(session: StoredOptimizerSession): string {
   if (request) {
     lines.push(
       'Request payload (what the UI sent to /predict):',
-      `  distance_km: ${request.distance_km}`,
       `  network_load: ${request.network_load}`,
       `  packet_loss: ${request.packet_loss}`,
       `  bandwidth: ${request.bandwidth}`,
@@ -140,13 +139,7 @@ export function DashboardAnalytics({ session }: Props) {
 
   return (
     <div className="mt-10 space-y-8">
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Kpi
-          label="Distance signal (API)"
-          value={d.distance_km.toLocaleString()}
-          unit="km"
-          accent="text-white"
-        />
+      <div className="max-w-sm">
         <Kpi
           label="Candidates evaluated"
           value={`${d.all_ranked.length}`}
@@ -189,10 +182,6 @@ export function DashboardAnalytics({ session }: Props) {
             </p>
             {session.request ? (
               <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
-                <div className="rounded-lg bg-white/[0.03] px-3 py-2">
-                  <dt className="text-xs text-slate-500">distance_km</dt>
-                  <dd className="font-mono text-cyan-300">{session.request.distance_km}</dd>
-                </div>
                 <div className="rounded-lg bg-white/[0.03] px-3 py-2">
                   <dt className="text-xs text-slate-500">network_load</dt>
                   <dd className="font-mono text-cyan-300">{session.request.network_load}</dd>

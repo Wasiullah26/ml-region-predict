@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 import Image from 'next/image'
 import { PageShell } from '@/components/PageShell'
 import { PredictResults } from '@/components/optimizer/PredictResults'
-import { GEO_HUBS, haversineKm, hubById } from '@/lib/geo'
+import { GEO_HUBS, distanceKmForCustomerHub } from '@/lib/geo'
 import { postPredict } from '@/lib/predict-api'
 import { saveOptimizerSession } from '@/lib/session-predict'
 import type { PredictResponse } from '@/lib/predict-types'
@@ -22,22 +22,12 @@ import {
 
 export default function OptimizerPage() {
   const [customerHubId, setCustomerHubId] = useState('sea')
-  const [workloadHubId, setWorkloadHubId] = useState('eu-west')
-  const [manualDistance, setManualDistance] = useState(false)
-  const [manualDistanceKm, setManualDistanceKm] = useState(942)
   const [networkLoad, setNetworkLoad] = useState(0.42)
   const [packetLoss, setPacketLoss] = useState(0.8)
   const [bandwidth, setBandwidth] = useState(850)
   const [result, setResult] = useState<PredictResponse | null>(null)
 
-  const computedKm = useMemo(() => {
-    const a = hubById(customerHubId)
-    const b = hubById(workloadHubId)
-    if (!a || !b) return 500
-    return haversineKm(a, b)
-  }, [customerHubId, workloadHubId])
-
-  const distanceKm = manualDistance ? manualDistanceKm : computedKm
+  const distanceKm = useMemo(() => distanceKmForCustomerHub(customerHubId), [customerHubId])
 
   const mutation = useMutation({
     mutationFn: postPredict,
@@ -96,7 +86,7 @@ export default function OptimizerPage() {
                   Region optimizer
                 </h1>
                 <p className="mt-2 max-w-xl text-slate-400">
-                  Describe where your users are, where you plan to deploy, and your network profile.
+                  Say where you or your customers are mainly based, then set your network profile.
                   CloudOptix returns a ranked recommendation across public-cloud regions.
                 </p>
               </div>
@@ -110,7 +100,7 @@ export default function OptimizerPage() {
 
                   <div className="space-y-2">
                     <label htmlFor="customer" className="text-sm text-slate-300">
-                      Where are your customers / users mainly located?
+                      Where are you based, or where are your customers mainly located?
                     </label>
                     <select
                       id="customer"
@@ -124,61 +114,6 @@ export default function OptimizerPage() {
                         </option>
                       ))}
                     </select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label htmlFor="workload" className="text-sm text-slate-300">
-                      Where are you leaning to deploy first (AWS / Azure / GCP region)?
-                    </label>
-                    <select
-                      id="workload"
-                      value={workloadHubId}
-                      onChange={(e) => setWorkloadHubId(e.target.value)}
-                      className="w-full rounded-xl border border-white/10 bg-slate-900/80 px-4 py-3 text-white outline-none ring-cyan-400/30 focus:ring-2"
-                    >
-                      {GEO_HUBS.map((h) => (
-                        <option key={h.id} value={h.id}>
-                          {h.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="flex flex-col gap-4 rounded-xl border border-white/10 bg-white/[0.03] p-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-white">Distance signal (km)</p>
-                      <p className="text-xs text-slate-500">
-                        {manualDistance
-                          ? 'Custom value sent to the model.'
-                          : 'Great-circle distance between the two hubs (min. 25 km).'}
-                      </p>
-                    </div>
-                    <p className="font-mono text-2xl font-bold text-cyan-300">
-                      {Math.round(distanceKm).toLocaleString()}
-                      <span className="text-sm font-normal text-slate-500"> km</span>
-                    </p>
-                  </div>
-
-                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                    <label className="flex cursor-pointer items-center gap-2 text-slate-300">
-                      <input
-                        type="checkbox"
-                        checked={manualDistance}
-                        onChange={(e) => setManualDistance(e.target.checked)}
-                        className="h-4 w-4 rounded border-white/20 bg-slate-900 text-cyan-500 focus:ring-cyan-500"
-                      />
-                      Enter distance manually
-                    </label>
-                    {manualDistance && (
-                      <input
-                        type="number"
-                        min={1}
-                        max={20000}
-                        value={manualDistanceKm}
-                        onChange={(e) => setManualDistanceKm(Number(e.target.value))}
-                        className="max-w-xs rounded-xl border border-white/10 bg-slate-900/80 px-4 py-2 font-mono text-white outline-none focus:ring-2 focus:ring-cyan-400/40"
-                      />
-                    )}
                   </div>
                 </div>
 
@@ -274,7 +209,7 @@ export default function OptimizerPage() {
                 </div>
                 <h2 className="text-xl font-semibold text-white">For startups & platform teams</h2>
                 <ul className="mt-4 space-y-3 text-sm text-slate-400">
-                  <li>• Ground distance in real geography, then tune the network sliders.</li>
+                  <li>• Pick your region, then tune the network sliders.</li>
                   <li>• Get a ranked list across AWS, Azure, and GCP candidates.</li>
                   <li>• No account — share the link in a pitch or architecture review.</li>
                 </ul>
