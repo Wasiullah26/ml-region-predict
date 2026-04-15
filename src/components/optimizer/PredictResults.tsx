@@ -43,18 +43,7 @@ export function PredictResults({ result, onReset }: Props) {
             </span>
           </div>
 
-          <dl className="mt-8 grid gap-4 border-t border-white/10 pt-6 sm:grid-cols-2 lg:grid-cols-4">
-            <div>
-              <dt className="text-xs text-slate-500">Est. latency</dt>
-              <dd className="mt-1 text-2xl font-bold text-cyan-400">
-                {result.est_latency_ms}
-                <span className="text-base font-normal text-slate-500"> ms</span>
-              </dd>
-            </div>
-            <div>
-              <dt className="text-xs text-slate-500">Confidence</dt>
-              <dd className="mt-1 text-2xl font-bold text-purple-300">{result.confidence.toFixed(1)}</dd>
-            </div>
+          <dl className="mt-8 grid gap-4 border-t border-white/10 pt-6 sm:grid-cols-2">
             <div>
               <dt className="text-xs text-slate-500">Distance signal</dt>
               <dd className="mt-1 text-2xl font-bold text-white">
@@ -83,12 +72,6 @@ export function PredictResults({ result, onReset }: Props) {
             <p className="mt-2 text-lg font-semibold text-white">{top?.name}</p>
             <p className="mt-1 text-sm text-slate-400">{top?.location}</p>
           </div>
-          <div className="mt-6 border-t border-white/10 pt-4">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-slate-500">Ranking score</span>
-              <span className="font-mono font-semibold text-cyan-300">{top?.score.toFixed(1)}</span>
-            </div>
-          </div>
         </aside>
       </div>
 
@@ -98,7 +81,7 @@ export function PredictResults({ result, onReset }: Props) {
           <h3 className="text-lg font-semibold text-white">Ranked alternatives</h3>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[640px] text-left text-sm">
+          <table className="w-full min-w-[560px] text-left text-sm">
             <thead>
               <tr className="border-b border-white/10 text-slate-500">
                 <th className="px-4 py-3 font-medium">#</th>
@@ -106,7 +89,6 @@ export function PredictResults({ result, onReset }: Props) {
                 <th className="px-4 py-3 font-medium">Location</th>
                 <th className="px-4 py-3 font-medium">Provider</th>
                 <th className="px-4 py-3 font-medium">Region</th>
-                <th className="px-4 py-3 text-right font-medium">Score</th>
               </tr>
             </thead>
             <tbody>
@@ -123,7 +105,6 @@ export function PredictResults({ result, onReset }: Props) {
                     </span>
                   </td>
                   <td className="px-4 py-3 font-mono text-xs text-slate-500">{row.region}</td>
-                  <td className="px-4 py-3 text-right font-mono text-cyan-300">{row.score.toFixed(1)}</td>
                 </tr>
               ))}
             </tbody>

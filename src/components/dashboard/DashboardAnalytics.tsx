@@ -72,8 +72,6 @@ function buildRunbookText(session: StoredOptimizerSession): string {
     `PRIMARY: ${data.optimal_dc_name} (${data.provider})`,
     `Location: ${data.location}`,
     `API region id: ${data.region}`,
-    `Est. latency: ${data.est_latency_ms} ms`,
-    `Confidence: ${data.confidence}`,
     '',
   ]
   if (request) {
@@ -88,7 +86,7 @@ function buildRunbookText(session: StoredOptimizerSession): string {
   }
   lines.push('Ranked candidates (failover order):')
   data.all_ranked.forEach((r, i) => {
-    lines.push(`  ${i + 1}. ${r.name} | ${r.provider} | ${r.region} | score ${r.score}`)
+    lines.push(`  ${i + 1}. ${r.name} | ${r.provider} | ${r.region}`)
   })
   return lines.join('\n')
 }
@@ -142,19 +140,7 @@ export function DashboardAnalytics({ session }: Props) {
 
   return (
     <div className="mt-10 space-y-8">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Kpi
-          label="Est. latency"
-          value={`${d.est_latency_ms}`}
-          unit="ms"
-          accent="text-cyan-400"
-        />
-        <Kpi
-          label="Confidence"
-          value={d.confidence.toFixed(1)}
-          unit=""
-          accent="text-violet-300"
-        />
+      <div className="grid gap-4 sm:grid-cols-2">
         <Kpi
           label="Distance signal (API)"
           value={d.distance_km.toLocaleString()}
